@@ -22,9 +22,7 @@ EXTENSIONS = {
 }
 
 
-def check_track(fn):
-    ext = os.path.splitext(fn)[-1]
-    cls = EXTENSIONS[ext]
+def check_track(fn, cls):
     track = cls(fn)
     for k in track.keys():
         if NEEDLE in k.lower():
@@ -36,10 +34,13 @@ def main(*dirs):
     for d in dirs:
         for root, _, files in os.walk(d):
             for f in files:
-                if os.path.splitext(f)[-1] not in EXTENSIONS.keys():
+                try:
+                    ext = os.path.splitext(f)[-1].lower()
+                    cls = EXTENSIONS[ext]
+                except IndexError:
                     continue
                 fn = os.path.join(root, f)
-                has_brains = check_track(fn)
+                has_brains = check_track(fn, cls)
                 if not has_brains:
                     sys.stdout.write("%s\n" % fn)
 

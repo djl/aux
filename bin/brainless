@@ -9,19 +9,23 @@ Usage: brainless <dir> [<dir> ..]
 import os
 import sys
 
-import mutagen.id3
+from mutagen.flac import FLAC
+from mutagen.id3 import ID3
+from mutagen.mp4 import MP4
 
 
-EXTENSIONS = ['.flac', '.mp3', '.m4a']
 NEEDLE = 'musicbrainz'
+EXTENSIONS = {
+    '.flac': FLAC,
+    '.mp3': ID3,
+    '.m4a': MP4
+}
 
 
 def check_track(fn):
-    try:
-        track = mutagen.id3.ID3(fn)
-    except mutagen.id3.error:
-        return False
-
+    ext = os.path.splitext(fn)[-1]
+    cls = EXTENSIONS[ext]
+    track = cls(fn)
     for k in track.keys():
         if NEEDLE in k.lower():
             return True
@@ -32,12 +36,12 @@ def main(*dirs):
     for d in dirs:
         for root, _, files in os.walk(d):
             for f in files:
-                if os.path.splitext(f)[-1] not in EXTENSIONS:
+                if os.path.splitext(f)[-1] not in EXTENSIONS.keys():
                     continue
                 fn = os.path.join(root, f)
                 has_brains = check_track(fn)
                 if not has_brains:
-                   sys.stdout.write("%s\n" % fn)
+                    sys.stdout.write("%s\n" % fn)
 
 
 if __name__ == '__main__':

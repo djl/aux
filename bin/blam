@@ -1,0 +1,51 @@
+#!/bin/bash
+#/ Usage: blam [<options>] <file> ...
+#/
+#/ Options:
+#/   -b <bitrate>     Set the bitrate (default: v0)
+#/   -l <loglevel>    Set libav logging level (default: warning)
+#/   -h               Show this message and exit
+PROGNAME=$(basename "$0")
+
+BLAM_BITRATE="${BLAM_BITRATE:--qscale:a 0}"
+BLAM_LOGLEVEL="${BLAM_LOGLEVEL:-warning}"
+
+abort() {
+  echo "$PROGNAME: $1" >&2
+  exit 1
+}
+
+bitrate() {
+  if [[ "$1" =~ ^v[0-9]$ ]]; then
+    echo "-qscale:a $(echo $1 | sed '1s/^.//')"
+  else
+    echo "-ab $1"
+  fi
+}
+
+usage() {
+  grep "^#/" $0 | cut -c4- >&2
+  exit 2
+}
+
+# parse args
+while getopts :hl:b: o; do
+  case "$o" in
+    b) BLAM_BITRATE=$(bitrate "$OPTARG") ;;
+    l) BLAM_LOGLEVEL="$OPTARG" ;;
+    h) usage ;;
+    ?) abort "Invalid option: -$OPTARG" ;;
+  esac
+done
+
+shift $((OPTIND-1))
+
+# check for all args
+if [[ $# -eq 0 ]]; then
+  usage
+fi
+
+# convert the files
+for f in $@; do
+  ffmpeg -v "$BLAM_LOGLEVEL" -i "$f" $BLAM_BITRATE "${f[@]/%flac/mp3}"
+done

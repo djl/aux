@@ -15,6 +15,12 @@ Given a list of directories, find audio files not tagged by
 MusicBrainz. Requires [mutagen](https://code.google.com/p/mutagen/).
 
 
+### artless
+
+Given a list of directories, find audio files with missing artwork.
+Requires [mutagen](https://code.google.com/p/mutagen/).
+
+
 ### untunes
 
 Given an iTunes library file and list of directories, find files not

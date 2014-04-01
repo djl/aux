@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+# Copyright 2014 David Logie
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+"""
+Usage: artless <dir> [<dir> ..]
+"""
+import os
+import sys
+
+from mutagen import File
+
+
+EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
+
+
+def check_track(fn, artwork=False):
+    track = File(fn)
+    for k in track.keys():
+        if NEEDLE in k.lower():
+            return True
+    return False
+
+
+def main(*dirs):
+    for d in dirs:
+        for root, _, files in os.walk(d):
+            for f in files:
+                ext = os.path.splitext(f)[-1].lower()
+                if ext not in EXTENSIONS:
+                    continue
+                fn = os.path.join(root, f)
+                track = File(fn)
+                if 'APIC:' not in track.keys():
+                    sys.stdout.write("%s\n" % fn)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sys.stdout.write(__doc__.lstrip())
+        sys.exit(1)
+
+    main(*sys.argv[1:])

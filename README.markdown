@@ -1,5 +1,5 @@
-autils
-------
+aux
+---
 
 Audio utilities
 

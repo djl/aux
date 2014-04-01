@@ -46,6 +46,8 @@ if [[ $# -eq 0 ]]; then
 fi
 
 # convert the files
-for f in $@; do
-  ffmpeg -v "$BLAM_LOGLEVEL" -i "$f" $BLAM_BITRATE "${f[@]/%flac/mp3}"
+for f in "$@"; do
+  ext=$(echo "$f" | awk -F '.' '{print $NF}')
+  out=$(echo "${f[@]/%${ext}/mp3}")
+  ffmpeg -v "$BLAM_LOGLEVEL" -i "$f" $BLAM_BITRATE "$out"
 done

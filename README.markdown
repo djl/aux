@@ -6,7 +6,7 @@ Audio utilities
 
 ### blam
 
-Convert FLAC to mp3 using ffmpeg.
+Convert stuff to mp3 using ffmpeg.
 
 
 ### brainless

@@ -3,12 +3,12 @@
 #/
 #/ Options:
 #/   -b <bitrate>     Set the bitrate (default: v0)
-#/   -l <loglevel>    Set libav logging level (default: warning)
+#/   -l <loglevel>    Set libav logging level (default: error)
 #/   -h               Show this message and exit
 PROGNAME=$(basename "$0")
 
 BLAM_BITRATE="${BLAM_BITRATE:--qscale:a 0}"
-BLAM_LOGLEVEL="${BLAM_LOGLEVEL:-warning}"
+BLAM_LOGLEVEL="${BLAM_LOGLEVEL:-error}"
 
 abort() {
   echo "$PROGNAME: $1" >&2

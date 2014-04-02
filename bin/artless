@@ -15,14 +15,6 @@ from mutagen import File
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
 
 
-def check_track(fn, artwork=False):
-    track = File(fn)
-    for k in track.keys():
-        if NEEDLE in k.lower():
-            return True
-    return False
-
-
 def main(*dirs):
     for d in dirs:
         for root, _, files in os.walk(d):

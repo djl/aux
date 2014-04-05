@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright 2014 David Logie
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
@@ -16,6 +17,9 @@ from mutagen import File
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
 REPLACEMENTS = {
     '/': '-',
+    '‐': '-',
+    '…': '...',
+    '•': '.',
 }
 TAGS = {
     'artist': ['artist', 'TPE2', 'TPE1'],
@@ -24,6 +28,8 @@ TAGS = {
 
 
 def munge(fn):
+    fn = fn.encode('utf-8')
+
     # replace stuff not suitable in directories/filenames
     for k, v in REPLACEMENTS.items():
         fn = fn.replace(k, v)
@@ -72,14 +78,14 @@ def check_track(track):
             break
 
     if current_album_dir != new_album_dir:
-        print(current_album_dir.encode('utf-8'))
-        print(new_album_dir.encode('utf-8'))
+        print(current_album_dir)
+        print(new_album_dir)
         print("")
 
 
 def main(*dirs):
     for d in dirs:
-        for root, _, files in os.walk(unicode(d)):
+        for root, _, files in os.walk(d):
             for f in files:
                 ext = os.path.splitext(f)[-1].lower()
                 if ext not in EXTENSIONS:

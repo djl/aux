@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Usage: untunes <path/to/itunes/library.xml> <dir> [<dir> ..]
+Usage: untunes [-m] <path/to/itunes/library.xml> <dir> [<dir> ..]
 """
 import os
 import sys
@@ -35,17 +35,27 @@ def get_files_from_dirs(dirs):
     return set(fns)
 
 
-def main(library, *dirs):
+def main(library, dirs, show_missing):
     itunes = get_tracks_from_library(library)
     disk = get_files_from_dirs(dirs)
-    unimported = sorted(disk - itunes)
-    if unimported:
-        print('\n'.join(unimported))
+    if show_missing:
+        what = sorted(itunes - disk)
+    else:
+        what = sorted(disk - itunes)
+
+    if what:
+        print('\n'.join(what))
 
 
 if __name__ == '__main__':
+    if sys.argv[1] == '-m':
+        show_missing = True
+        del sys.argv[1]
+    else:
+        show_missing = False
+
     if len(sys.argv) < 3:
         print(__doc__.strip())
         sys.exit(1)
 
-    main(*sys.argv[1:])
+    main(sys.argv[1], sys.argv[2:], show_missing)

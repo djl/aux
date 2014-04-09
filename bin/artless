@@ -15,6 +15,13 @@ from mutagen import File
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
 
 
+def check_track(track):
+    for k in track.keys():
+        if k.startswith('APIC:'):
+            return True
+    return False
+
+
 def main(*dirs):
     for d in dirs:
         for root, _, files in os.walk(d):
@@ -24,7 +31,7 @@ def main(*dirs):
                     continue
                 fn = os.path.join(root, f)
                 track = File(fn)
-                if 'APIC:' not in track.keys():
+                if not check_track(track):
                     sys.stdout.write("%s\n" % fn)
 
 

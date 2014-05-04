@@ -13,11 +13,14 @@ from mutagen import File
 
 
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
+TAGS = ['APIC:', 'covr']
 
 
 def check_track(track):
-    for k in track.keys():
-        if k.startswith('APIC:'):
+    if getattr(track, 'pictures', None):
+        return True
+    for t in TAGS:
+        if t in track:
             return True
     return False
 

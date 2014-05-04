@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+# Copyright 2014 David Logie
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+"""
+Usage: showtag <tag> <files>
+"""
+import os
+import sys
+
+from mutagen import File
+
+
+PROGNAME = os.path.basename(sys.argv[0])
+
+
+def abort(msg, retval=1):
+    sys.stderr.write("%s: %s\n" % (PROGNAME, msg))
+    sys.exit(retval)
+
+
+def help():
+    sys.stderr.write(__doc__.lstrip())
+    sys.exit(2)
+
+
+def main():
+    if len(sys.argv) < 3:
+        help()
+
+    tag = sys.argv.pop(1)
+    count = 0
+    max = len(sys.argv[1:]) -1
+    for fn in sys.argv[1:]:
+        try:
+            track = File(fn)
+            value = track[tag]
+        except IOError:
+            help()
+        except KeyError:
+            abort("Unknown tag '%s' for file '%s'" % (tag, track.filename))
+
+        if max > 0:
+            print("%s:" % track.filename)
+
+        print(value)
+
+        if count != max:
+            print("")
+            count += 1
+
+if __name__ == '__main__':
+    main()

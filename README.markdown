@@ -17,6 +17,10 @@ Audio utilities.
   Given a list of directories, find audio files not tagged by
   MusicBrainz. Requires [mutagen](https://code.google.com/p/mutagen/).
 
+* `lstag`, 'rmtag', 'showtag' (python)
+
+  List, show and delete tags from audio files. Requires [mutagen](https://code.google.com/p/mutagen/).
+
 * `mudir` (python)
 
   Given a list of directories, find audio files not sorted into

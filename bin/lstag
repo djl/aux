@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+# Copyright 2014 David Logie
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+"""
+Usage: lstag <files>
+"""
+import os
+import sys
+
+from mutagen import File
+
+
+PROGNAME = os.path.basename(sys.argv[0])
+
+
+def abort(msg, retval=1):
+    sys.stderr.write("%s: %s\n" % (PROGNAME, msg))
+    sys.exit(retval)
+
+
+def help():
+    sys.stderr.write(__doc__.lstrip())
+    sys.exit(2)
+
+
+def main():
+    if len(sys.argv) == 1:
+        help()
+
+    count = 0
+    max = len(sys.argv[1:]) - 1
+    for fn in sys.argv[1:]:
+        try:
+            track = File(fn)
+        except IOError:
+            help()
+
+        if max > 0:
+            print("%s:" % track.filename)
+
+        for t in sorted(track.tags.keys()):
+            print(t)
+
+        if count != max:
+            print("")
+            count += 1
+
+if __name__ == '__main__':
+    main()

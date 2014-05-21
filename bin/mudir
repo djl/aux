@@ -23,8 +23,8 @@ REPLACEMENTS = {
     '•': '.',
 }
 TAGS = {
-    'artist': ['artist', 'TPE2', 'TPE1'],
-    'album': ['album', 'TALB'],
+    'artist': ['artist', 'TPE2', 'TPE1', 'aART'],
+    'album': ['album', 'TALB', '\xa9alb'],
 }
 
 

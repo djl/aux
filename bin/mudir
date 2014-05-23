@@ -39,7 +39,7 @@ def munge(fn):
     fn = re.sub('^\.+', '', fn)
     fn = re.sub('\.+$', '', fn)
 
-    return fn.decode('utf-8')
+    return fn.strip().decode('utf-8')
 
 
 def check_track(track):

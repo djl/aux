@@ -49,5 +49,5 @@ fi
 for f in "$@"; do
   ext=$(echo "$f" | awk -F '.' '{print $NF}')
   out=$(echo "${f[@]/%${ext}/mp3}")
-  echo ffmpeg -v "$BLAM_LOGLEVEL" -i "$f" $(bitrate "$BLAM_BITRATE") "$out"
+  ffmpeg -v "$BLAM_LOGLEVEL" -i "$f" $(bitrate "$BLAM_BITRATE") "$out"
 done

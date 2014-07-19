@@ -6,6 +6,7 @@
 """
 Usage: brainless <dir> [<dir> ..]
 """
+from __future__ import print_function
 import os
 import sys
 
@@ -34,12 +35,12 @@ def main(*dirs):
                 fn = os.path.join(root, f)
                 has_brains = check_track(fn)
                 if not has_brains:
-                    sys.stdout.write("%s\n" % fn)
+                    print(fn)
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.stdout.write(__doc__.lstrip())
+        print(__doc__.strip())
         sys.exit(1)
 
     main(*sys.argv[1:])

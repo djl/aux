@@ -7,6 +7,7 @@
 """
 Usage: mudir <dir> [<dir> ..]
 """
+from __future__ import print_function
 import os
 import re
 import sys
@@ -87,7 +88,7 @@ def check_track(track):
     if current_album_dir != new_album_dir:
         print(current_album_dir)
         print(new_album_dir)
-        print("")
+        print()
 
 
 def main(*dirs):
@@ -104,7 +105,7 @@ def main(*dirs):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.stdout.write(__doc__.lstrip())
+        print(__doc__.strip())
         sys.exit(1)
 
     main(*sys.argv[1:])

@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+# Copyright 2014 David Logie
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+"""
+Usage: bitrate [file...]
+"""
+from __future__ import print_function
+import os
+import sys
+
+from mutagen.mp3 import MP3
+
+
+EXTENSIONS = ['.mp3']
+
+
+def show_bitrate(fn):
+    track = MP3(fn)
+    print("%s: %s kbps" % (track.filename, track.info.bitrate/1000))
+
+
+def main(*dirs):
+    for d in dirs:
+        if os.path.isfile(d):
+            show_bitrate(d)
+            continue
+
+        for root, dirs, files in os.walk(d):
+            dirs.sort()
+            files.sort()
+            for f in files:
+                ext = os.path.splitext(f)[-1].lower()
+                if ext not in EXTENSIONS:
+                    continue
+                show_bitrate(os.path.join(root, f))
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print(__doc__.strip())
+        sys.exit(2)
+    main(*sys.argv[1:])

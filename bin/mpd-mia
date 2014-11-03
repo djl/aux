@@ -8,6 +8,9 @@ import sys
 from mpd import MPDClient
 
 PROGNAME = 'mpd-mia'
+
+EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4', '.ogg']
+
 CONF_FILES = [
     '~/.mpd/mpd.conf',
     '/etc/mpd.conf'
@@ -43,6 +46,9 @@ def get_files_from_directory(dirname):
     fns = []
     for root, _, files in os.walk(dirname):
         for f in files:
+            _, ext = os.path.splitext(f)
+            if ext not in EXTENSIONS:
+                continue
             fns.append(os.path.join(root, f))
     return set(fns)
 

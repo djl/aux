@@ -6,7 +6,6 @@
 """
 Usage: bitrate [file...]
 """
-from __future__ import print_function
 import os
 import sys
 
@@ -16,9 +15,9 @@ from mutagen.mp3 import MP3
 EXTENSIONS = ['.mp3']
 
 
-def show_bitrate(fn):
-    track = MP3(fn)
-    print("%s: %s kbps" % (track.filename, track.info.bitrate/1000))
+def echo(msg=''):
+    sys.stdout.write(msg + '\n')
+    sys.stdout.flush()
 
 
 def main(*dirs):
@@ -34,11 +33,12 @@ def main(*dirs):
                 ext = os.path.splitext(f)[-1].lower()
                 if ext not in EXTENSIONS:
                     continue
-                show_bitrate(os.path.join(root, f))
+                track = MP3(os.path.join(root, f))
+                echo("%s: %s kbps" % (track.filename, track.info.bitrate/1000))
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print(__doc__.strip())
+        echo(__doc__.strip())
         sys.exit(2)
     main(*sys.argv[1:])

@@ -7,10 +7,9 @@ import sys
 
 from mpd import MPDClient
 
+
 PROGNAME = 'mpd-mia'
-
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4', '.ogg']
-
 CONF_FILES = [
     '~/.mpd/mpd.conf',
     '/etc/mpd.conf'

@@ -6,7 +6,6 @@
 """
 Usage: artless <dir> [<dir> ..]
 """
-from __future__ import print_function
 import os
 import sys
 
@@ -15,6 +14,11 @@ from mutagen import File
 
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
 TAGS = ['APIC:', 'covr']
+
+
+def echo(msg=''):
+    sys.stdout.write(msg + '\n')
+    sys.stdout.flush()
 
 
 def check_track(track):
@@ -36,12 +40,12 @@ def main(*dirs):
                 fn = os.path.join(root, f)
                 track = File(fn)
                 if not check_track(track):
-                    print(fn)
+                    echo(fn)
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print(__doc__.strip())
+        echo(__doc__.strip())
         sys.exit(1)
 
     main(*sys.argv[1:])

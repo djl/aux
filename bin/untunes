@@ -2,7 +2,6 @@
 """
 Usage: untunes [-m] <path/to/itunes/library.xml> <dir> [<dir> ..]
 """
-from __future__ import print_function
 import os
 import sys
 import plistlib
@@ -14,6 +13,10 @@ except ImportError:
     from urlparse import urlparse
     from urllib import url2pathname
 
+
+def echo(msg=''):
+    sys.stdout.write(msg + '\n')
+    sys.stdout.flush()
 
 def get_tracks_from_library(library):
     pl = plistlib.readPlist(library)
@@ -45,7 +48,7 @@ def main(library, dirs, show_missing):
         what = sorted(disk - itunes)
 
     if what:
-        print('\n'.join(what))
+        echo('\n'.join(what))
 
 
 if __name__ == '__main__':
@@ -56,7 +59,7 @@ if __name__ == '__main__':
         show_missing = False
 
     if len(sys.argv) < 3:
-        print(__doc__.strip())
+        echo(__doc__.strip())
         sys.exit(1)
 
     main(sys.argv[1], sys.argv[2:], show_missing)

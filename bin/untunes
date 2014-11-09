@@ -18,6 +18,7 @@ def echo(msg=''):
     sys.stdout.write(msg + '\n')
     sys.stdout.flush()
 
+
 def get_tracks_from_library(library):
     pl = plistlib.readPlist(library)
     tracks = []

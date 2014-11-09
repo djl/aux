@@ -71,9 +71,9 @@ def get_library(dirname):
     return set(fns)
 
 
-def get_music_directory(config_file):
+def get_music_directory(cfg):
     try:
-        with open(config_file) as fh:
+        with open(cfg) as fh:
             for line in fh:
                 line = line.strip()
                 if not line:
@@ -87,7 +87,7 @@ def get_music_directory(config_file):
         fail('Could not read %s' % conf)
 
     if not music_directory:
-        fail('Could not find the "music_directory" setting in %s' % config_file)
+        fail('Could not find the "music_directory" setting in %s' % cfg)
 
     return music_directory.strip('"')
 
@@ -105,7 +105,6 @@ def main():
     missing = sorted(files - library)
     if missing:
         echo('\n'.join(missing))
-
 
 
 if __name__ == '__main__':

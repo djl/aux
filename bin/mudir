@@ -15,6 +15,9 @@ import unicodedata
 from mutagen import File
 
 
+reload(sys).setdefaultencoding('utf8')
+
+
 EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
 REPLACEMENTS = {
     '/': '-',
@@ -31,6 +34,7 @@ TAGS = {
 def echo(msg=''):
     sys.stdout.write(msg + '\n')
     sys.stdout.flush()
+
 
 def munge(fn):
     fn = fn.encode('utf-8')

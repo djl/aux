@@ -1,48 +1,22 @@
-#!/usr/bin/env python
-# Copyright 2014 David Logie
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
-"""
-Usage: bitrate [file...]
-"""
-import os
-import sys
+#!/bin/sh
+#/ Usage: bitrate [file...]
 
-from mutagen.mp3 import MP3
+br() {
+  b=$(mp3info -r a -p "%f: %r\n" "$1" | rev | cut -d '.' -f2- | rev)
+  echo "$b kbps"
+}
 
+[ -n "$1" ] || {
+  grep "^#/" $0 | cut -c4- >&2
+  exit 2
+}
 
-EXTENSIONS = ['.mp3']
-
-
-def echo(msg=''):
-    sys.stdout.write(msg + '\n')
-    sys.stdout.flush()
-
-
-def bitrate(f):
-    track = MP3(f)
-    echo("%s: %s kbps" % (track.filename, track.info.bitrate/1000))
-
-
-def main(*dirs):
-    for d in dirs:
-        if os.path.isfile(d):
-            bitrate(d)
-            continue
-
-        for root, dirs, files in os.walk(d):
-            dirs.sort()
-            files.sort()
-            for f in files:
-                ext = os.path.splitext(f)[-1].lower()
-                if ext not in EXTENSIONS:
-                    continue
-                bitrate(os.path.join(root, f))
-
-
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        echo(__doc__.strip())
-        sys.exit(2)
-    main(*sys.argv[1:])
+for x in "$@"; do
+  if [ -d "$x" ]; then
+    find "$x" -name '*.mp3' -maxdepth 1 | sort | while read -r y; do
+      br "$y"
+    done
+  else
+    br "$x"
+  fi
+done

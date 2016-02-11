@@ -8,9 +8,9 @@ Audio utilities.
   Given a list of directories, find audio files with missing artwork.
   Requires [mutagen](https://code.google.com/p/mutagen/).
 
-* `bitrate` (Python)
+* `bitrate` (POSIX shell)
 
-  Print the bitrate for the given files. Requires [mutagen](https://code.google.com/p/mutagen/).
+  Print an MP3 file's bitrate. Requires [mp3info](http://ibiblio.org/mp3info/).
 
 * `blam` (bash)
 

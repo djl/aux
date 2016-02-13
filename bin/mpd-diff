@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#/ Usage: mpd-diff [options] [path/to/mpd.conf]
+#/
+#/ Options:
+#/   -a        Show all files rather than just audio files
+#/   -h        Show this message and exit
+PROGNAME="mpd-diff"
+EXTENSIONS="\.(mp3|mp4|m4a|flac|ogg)$"
+SHOW_ALL=0
+
+abort() {
+  echo "$PROGNAME: $1" >&2
+  exit 1
+}
+
+usage() {
+  grep "^#/" $0 | cut -c4- >&2
+  exit 2
+}
+
+while getopts :ah o; do
+  case "$o" in
+    a) SHOW_ALL=1 ;;
+    h) usage ;;
+    ?) abort "Invalid option: -$OPTARG" ;;
+  esac
+done
+
+shift $((OPTIND-1))
+
+CONFIG_FILE=~/.mpd/mpd.conf
+[ -n "$1" ] && CONFIG_FILE="$1"
+[ -f $CONFIG_FILE ] || abort "Could not read config file: $CONFIG_FILE"
+
+MUSIC_DIR=$(grep "music_directory" $CONFIG_FILE 2> /dev/null | awk '{print $NF}')
+MUSIC_DIR=$(echo "$MUSIC_DIR" | sed 's/^"\(.*\)"$/\1/' | sed "s/^\"\(.*\)'$/\1/")
+[ -n "$MUSIC_DIR" ] || abort "Could not find music directory in $CONFIG_FILE"
+[ -d "$MUSIC_DIR" ] || abort "music_directory doesn't look like a directory: $MUSIC_DIR"
+
+# Gather the list of files first otherwise mpc will timeout while
+# waiting for sort to finish
+list_all=$(mpc listall)
+in_mpd=$(echo "$list_all" | while read f; do realpath "$MUSIC_DIR/$f"; done | sort)
+if [ "$SHOW_ALL" = "1" ]; then
+  on_disk=$(find "$MUSIC_DIR" -type f -exec realpath '{}' \; | sort)
+else
+  on_disk=$(find "$MUSIC_DIR" -type f -exec realpath '{}' \; | grep -E "$EXTENSIONS" | sort)
+fi
+
+diff <(echo "$in_mpd") <(echo "$on_disk")

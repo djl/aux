@@ -21,10 +21,10 @@ Audio utilities.
   Given a list of directories, find audio files not tagged by
   MusicBrainz. Requires [mutagen](https://code.google.com/p/mutagen/).
 
-* `mpd-mia` (Python)
+* `mpd-diff` (bash)
 
-  Look in mpd's `music_directory` and find files not present in mpd's
-  library. Requires [python-mpd2](https://pypi.python.org/pypi/python-mpd2).
+  Show a diff between mpd's library and the files in mpd's
+  `music_directory`.
 
 * `mudir` (Python)
 

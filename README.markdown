@@ -10,7 +10,7 @@ Audio utilities.
 
 * `bitrate` (POSIX shell)
 
-  Print an MP3 file's bitrate. Requires [mp3info](http://ibiblio.org/mp3info/).
+  Print an MP3 file's bitrate. Requires [mediainfo](https://mediaarea.net/en/MediaInfo).
 
 * `blam` (bash)
 

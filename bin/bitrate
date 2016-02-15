@@ -2,8 +2,8 @@
 #/ Usage: bitrate [file...]
 
 br() {
-  b=$(mp3info -r a -p "%f: %r\n" "$1" | rev | cut -d '.' -f2- | rev)
-  echo "$b kbps"
+  b=$(mediainfo "$1" | egrep "Bit rate(\s+):" | cut -d: -f2-)
+  echo "$1:$b"
 }
 
 [ -n "$1" ] || {

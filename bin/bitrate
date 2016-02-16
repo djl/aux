@@ -13,7 +13,7 @@ br() {
 
 for x in "$@"; do
   if [ -d "$x" ]; then
-    find "$x" -name '*.mp3' -maxdepth 1 | sort | while read -r y; do
+    find "$x" -name '*.mp3' | sort | while read -r y; do
       br "$y"
     done
   else

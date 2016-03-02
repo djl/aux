@@ -14,7 +14,7 @@ abort() {
 }
 
 usage() {
-  grep "^#/" $0 | cut -c4- >&2
+  grep "^#/" "$0" | cut -c4- >&2
   exit 2
 }
 
@@ -30,9 +30,9 @@ shift $((OPTIND-1))
 
 CONFIG_FILE=~/.mpd/mpd.conf
 [ -n "$1" ] && CONFIG_FILE="$1"
-[ -f $CONFIG_FILE ] || abort "Could not read config file: $CONFIG_FILE"
+[ -f "$CONFIG_FILE" ] || abort "Could not read config file: $CONFIG_FILE"
 
-MUSIC_DIR=$(grep "music_directory" $CONFIG_FILE 2> /dev/null | awk '{print $NF}')
+MUSIC_DIR=$(grep "music_directory" "$CONFIG_FILE" 2> /dev/null | awk '{print $NF}')
 MUSIC_DIR=$(echo "$MUSIC_DIR" | sed 's/^"\(.*\)"$/\1/' | sed "s/^\"\(.*\)'$/\1/")
 [ -n "$MUSIC_DIR" ] || abort "Could not find music directory in $CONFIG_FILE"
 [ -d "$MUSIC_DIR" ] || abort "music_directory doesn't look like a directory: $MUSIC_DIR"
@@ -40,7 +40,7 @@ MUSIC_DIR=$(echo "$MUSIC_DIR" | sed 's/^"\(.*\)"$/\1/' | sed "s/^\"\(.*\)'$/\1/"
 # Gather the list of files first otherwise mpc will timeout while
 # waiting for sort to finish
 list_all=$(mpc listall)
-in_mpd=$(echo "$list_all" | while read f; do realpath "$MUSIC_DIR/$f"; done | sort)
+in_mpd=$(echo "$list_all" | while read -r f; do realpath "$MUSIC_DIR/$f"; done | sort)
 if [ "$SHOW_ALL" = "1" ]; then
   on_disk=$(find "$MUSIC_DIR" -type f -exec realpath '{}' \; | sort)
 else

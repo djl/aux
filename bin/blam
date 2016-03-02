@@ -24,7 +24,7 @@ bitrate() {
 }
 
 usage() {
-  grep "^#/" $0 | cut -c4- >&2
+  grep "^#/" "$0" | cut -c4- >&2
   exit 2
 }
 

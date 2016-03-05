@@ -3,9 +3,11 @@
 #/
 #/ Options:
 #/   -a        Show all files rather than just audio files
+#/   -c        Strip context lines from the diff
 #/   -h        Show this message and exit
 PROGNAME="mpd-diff"
 EXTENSIONS="\.(mp3|mp4|m4a|flac|ogg)$"
+CONTEXT=1
 SHOW_ALL=0
 
 abort() {
@@ -18,9 +20,10 @@ usage() {
   exit 2
 }
 
-while getopts :ah o; do
+while getopts :ach o; do
   case "$o" in
     a) SHOW_ALL=1 ;;
+    c) CONTEXT=0 ;;
     h) usage ;;
     ?) abort "Invalid option: -$OPTARG" ;;
   esac
@@ -47,4 +50,8 @@ else
   on_disk=$(find "$MUSIC_DIR" -type f -exec realpath '{}' \; | grep -E "$EXTENSIONS" | sort)
 fi
 
-diff <(echo "$in_mpd") <(echo "$on_disk")
+if [ "$CONTEXT" = 1 ]; then
+  diff <(echo "$in_mpd") <(echo "$on_disk")
+else
+  diff <(echo "$in_mpd") <(echo "$on_disk") | grep -E '^(<|>)'
+fi

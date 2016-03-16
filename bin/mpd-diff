@@ -40,6 +40,9 @@ MUSIC_DIR=$(echo "$MUSIC_DIR" | sed 's/^"\(.*\)"$/\1/' | sed "s/^\"\(.*\)'$/\1/"
 [ -n "$MUSIC_DIR" ] || abort "Could not find music directory in $CONFIG_FILE"
 [ -d "$MUSIC_DIR" ] || abort "music_directory doesn't look like a directory: $MUSIC_DIR"
 
+# Exit early if mpd is unavailable
+mpc 1> /dev/null || exit $?
+
 # Gather the list of files first otherwise mpc will timeout while
 # waiting for sort to finish
 list_all=$(mpc listall)

@@ -2,6 +2,7 @@
 #/ Usage: bitrate [file...]
 
 br() {
+  [ -f "$1" ] || return
   b=$(mediainfo "$1" | egrep "Bit rate(\s+):" | cut -d: -f2-)
   echo "$1:$b"
 }

@@ -14,7 +14,7 @@ br() {
 
 for x in "$@"; do
   if [ -d "$x" ]; then
-    find "$x" -name '*.mp3' | sort | while read -r y; do
+    find "$x" -type f | grep -E '\.(flac|mp3|m4a|ogg)' | sort | while read -r y; do
       br "$y"
     done
   else

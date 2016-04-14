@@ -26,11 +26,6 @@ Audio utilities.
   Show a diff between mpd's library and the files in mpd's
   `music_directory`.
 
-* `mudir` (Python)
-
-  Given a list of directories, find audio files not sorted into
-  `$ARTIST/$ALBUM` directory structure. Requires [mutagen](https://code.google.com/p/mutagen/).
-
 * `untunes` (Python)
 
   Given an iTunes library file and list of directories, find files not

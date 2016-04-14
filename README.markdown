@@ -3,23 +3,23 @@ aux
 
 Audio utilities.
 
-* `artless` (Python)
+* `artless` (POSIX shell)
 
   Given a list of directories, find audio files with missing artwork.
-  Requires [mutagen](https://code.google.com/p/mutagen/).
+  Requires [mediainfo][mi]
 
 * `bitrate` (POSIX shell)
 
-  Print an MP3 file's bitrate. Requires [mediainfo](https://mediaarea.net/en/MediaInfo).
+  Print an MP3 file's bitrate. Requires [mediainfo][mi]
 
 * `blam` (bash)
 
   Convert stuff to mp3 using ffmpeg.
 
-* `brainless` (Python)
+* `brainless` (POSIX shell)
 
   Given a list of directories, find audio files not tagged by
-  MusicBrainz. Requires [mutagen](https://code.google.com/p/mutagen/).
+  MusicBrainz. Requires Requires [mediainfo][mi]
 
 * `mpd-diff` (bash)
 
@@ -35,3 +35,5 @@ Audio utilities.
 
   Given an iTunes library file and list of directories, find files not
   present in iTunes.
+
+[mi]: https://mediaarea.net/en/MediaInfo

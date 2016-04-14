@@ -1,50 +1,22 @@
-#!/usr/bin/env python
-# Copyright 2014 David Logie
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
-"""
-Usage: brainless <dir> [<dir> ..]
-"""
-import os
-import sys
+#!/bin/sh
+#/ Usage: brainless [file...]
 
-from mutagen import File
+bl() {
+  [ -f "$1" ] || return
+  mediainfo "$1" | grep -qi "musicbrainz" || echo "$1"
+}
 
+[ -n "$1" ] || {
+  grep "^#/" "$0" | cut -c4- >&2
+  exit 2
+}
 
-NEEDLE = 'musicbrainz'
-EXTENSIONS = ['.flac', '.mp3', '.m4a', '.mp4']
-
-
-def echo(msg=''):
-    sys.stdout.write(msg + '\n')
-    sys.stdout.flush()
-
-
-def check_track(fn):
-    track = File(fn)
-    for k in track.keys():
-        if NEEDLE in k.lower():
-            return True
-    return False
-
-
-def main(*dirs):
-    for d in dirs:
-        for root, _, files in os.walk(d):
-            for f in files:
-                ext = os.path.splitext(f)[-1].lower()
-                if ext not in EXTENSIONS:
-                    continue
-                track = File(os.path.join(root, f))
-                for k in track.keys():
-                    if NEEDLE in k.lower():
-                        echo(track.filename)
-
-
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        echo(__doc__.strip())
-        sys.exit(1)
-
-    main(*sys.argv[1:])
+for x in "$@"; do
+  if [ -d "$x" ]; then
+    find "$x" -type f | grep -E '\.(flac|mp3|m4a|ogg)' | sort | while read -r y; do
+      bl "$y"
+    done
+  else
+    bl "$x"
+  fi
+done

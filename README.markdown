@@ -6,11 +6,11 @@ Audio utilities.
 * `artless` (POSIX shell)
 
   Given a list of directories, find audio files with missing artwork.
-  Requires [mediainfo][mi]
+  Requires [mediainfo][mi].
 
 * `bitrate` (POSIX shell)
 
-  Print an MP3 file's bitrate. Requires [mediainfo][mi]
+  Print an MP3 file's bitrate. Requires [mediainfo][mi].
 
 * `blam` (bash)
 
@@ -19,7 +19,7 @@ Audio utilities.
 * `brainless` (POSIX shell)
 
   Given a list of directories, find audio files not tagged by
-  MusicBrainz. Requires Requires [mediainfo][mi]
+  MusicBrainz. Requires [mediainfo][mi].
 
 * `mpd-diff` (bash)
 
